@@ -8,7 +8,7 @@ const controllers = require('../DrinkControllers/beerControllers')
 
 router
 .route('/')
-.get(verify,controllers.getMany)
+.get(controllers.getMany)
 .post(verify,controllers.createOne)
 
 router

@@ -29,8 +29,7 @@ const port = 9000
 
 
 app.use(cors({
-  origin: ['http://localhost:3000'],
-  methods: ['GET','POST'],
+  origin: 'http://localhost:3000',
   credentials: true
 }))
 app.use(cookieParser())

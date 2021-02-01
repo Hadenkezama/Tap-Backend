@@ -102,8 +102,12 @@ const createOne = (req, res) => {
 }
 
 const updateOne = (req, res) => {
-  let { name, img, amount, num_in_stock, price, beer_catagorie_id } = req.body
+ 
+  let { name, img, amount, num_in_stock, price, catagorie_id } = req.body
   id = req.params.id
+  
+
+  
 
   if(!name){
     return res.status(400).json('Beer name cannnot be left blank')
@@ -118,21 +122,21 @@ const updateOne = (req, res) => {
   if(!price){
     return res.status(400).json('The price can not be left empty')
   }
-  if(!beer_catagorie_id){
+  if(!catagorie_id){
     return res.status(400).json('The beer catagorie can not be left blank')
   }
-  if(isNaN( price, amount, num_in_stock, beer_catagorie_id )){
+  if(isNaN( price, amount, num_in_stock, catagorie_id )){
     return res.status(400).json('A non number character was entered where number was supposed to be')
   }
 
 
   
 
-  const query = 'UPDATE beers SET name = ?, img = ?, amount = ?, num_in_stock = ?, price = ?, beer_catagorie_id = ? WHERE id = ?'
+  const query = 'UPDATE beers SET name = ?, img = ?, amount = ?, num_in_stock = ?, price = ?, catagorie_id = ? WHERE id = ?'
 
-  connection.query(query,[name, img, amount, num_in_stock, price, beer_catagorie_id, id], (err, result) => {
-    if(err){
-      res.status(400).json('Error updating beer')
+  connection.query(query,[name, img, amount, num_in_stock, price, catagorie_id, id], (err, result) => {
+    if(err){ 
+    res.status(400).json('Error updating beer')
     }
     else {
       res.status(200).json('Beer has been updated')
