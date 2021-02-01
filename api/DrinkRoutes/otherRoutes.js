@@ -1,0 +1,24 @@
+const express = require('express')
+const router = express.Router()
+const controllers = require('../DrinkControllers/otherControllers')
+const verify = require('../Users/verifyToken')
+
+
+router
+.route('/')
+.get(controllers.getMany)
+.post(verify,controllers.createOne)
+
+router
+.route('/:id')
+.get(controllers.getOne)
+.put(verify,controllers.updateOne)
+.delete(verify,controllers.deleteOne)
+
+router
+.route('/search/:name')
+.get(controllers.getByName)
+
+
+
+module.exports = router
