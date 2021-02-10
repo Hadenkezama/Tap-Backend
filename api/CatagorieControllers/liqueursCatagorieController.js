@@ -18,7 +18,7 @@ const getOne = (req, res) => {
   if(!isNaN(id))
   connection.query(
     `select * from liqueurs_catagories
-    where liqueurs_catagorie_id = ${id}`, (err, result) => {
+    where catagorie_id = ${id}`, (err, result) => {
       if (err) throw err
 
       if (result.length === 0 ){
@@ -65,7 +65,7 @@ if(!catagorie){
 }
 
 
-  const query = 'UPDATE liqueurs_catagories SET liqueur WHERE liqueurs_catagorie_id = ?'
+  const query = 'UPDATE liqueurs_catagories SET liqueur WHERE catagorie_id = ?'
 
   connection.query(query,[catagorie, id], (err, result) => {
     if(err){
@@ -84,7 +84,7 @@ const deleteOne = (req, res) => {
   let del = req.params.id
 
   if(!isNaN(del)){
-    connection.query(`delete from liqueurs_catagories where liqueurs_catagorie_id = ${del}`, 
+    connection.query(`delete from liqueurs_catagories where catagorie_id = ${del}`, 
     (err, result) => {
 
       if(err){

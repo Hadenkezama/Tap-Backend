@@ -14,7 +14,7 @@ const getByName = (req, res) => {
 
 const getCatagorieType = (req, res) => {
   console.log(req.params.catagorie)
-    connection.query(`select * from liqueurs T, liqueurs_catagories S where S.catagorie ="${req.params.catagorie}" and S.liqueurs_catagorie_id = T.liqueurs_catagorie_id`, (err, result) =>{
+    connection.query(`select * from liqueurs T, liqueurs_catagories S where S.catagorie ="${req.params.catagorie}" and S.catagorie_id = T.catagorie_id`, (err, result) =>{
       if(err){
         res.status(400).json('Error returning drinks of that catagorie')
       }
@@ -59,7 +59,7 @@ const getOne = (req, res) => {
 }
 
 const createOne = (req, res) => {
-  let { name, img, amount, num_in_stock, price, liqueurs_catagorie_id } = req.body
+  let { name, img, amount, num_in_stock, price, catagorie_id } = req.body
 
   if(!name){
     return res.status(400).json('liqueurs name cannnot be left blank')
@@ -74,7 +74,7 @@ const createOne = (req, res) => {
   if(!price){
     return res.status(400).json('The price can not be left empty')
   }
-  if(!liqueurs_catagorie_id){
+  if(!catagorie_id){
     return res.status(400).json('The liqueur catagorie can not be left blank')
   }
 
@@ -84,7 +84,7 @@ const createOne = (req, res) => {
     amount: amount,
     num_in_stock: num_in_stock,
     price: price,
-    liqueurs_catagorie_id: liqueurs_catagorie_id
+    catagorie_id: catagorie_id
   }
 
   connection.query('insert into liqueurs set ?', data, (err, result) => {
@@ -102,7 +102,7 @@ const createOne = (req, res) => {
 }
 
 const updateOne = (req, res) => {
-  let { name, img, amount, num_in_stock, price, liqueurs_catagorie_id } = req.body
+  let { name, img, amount, num_in_stock, price, catagorie_id } = req.body
   id = req.params.id
 
   if(!name){
@@ -118,19 +118,19 @@ const updateOne = (req, res) => {
   if(!price){
     return res.status(400).json('The price can not be left empty')
   }
-  if(!liqueurs_catagorie_id){
+  if(!catagorie_id){
     return res.status(400).json('The liqueur catagorie can not be left blank')
   }
-  if(isNaN( price, amount, num_in_stock, liqueurs_catagorie_id )){
+  if(isNaN( price, amount, num_in_stock, catagorie_id )){
     return res.status(400).json('A non number character was entered where number was supposed to be')
   }
 
 
   
 
-  const query = 'UPDATE liqueurs SET name = ?, img = ?, amount = ?, num_in_stock = ?, price = ?, liqueurs_catagorie_id = ? WHERE id = ?'
+  const query = 'UPDATE liqueurs SET name = ?, img = ?, amount = ?, num_in_stock = ?, price = ?, catagorie_id = ? WHERE id = ?'
 
-  connection.query(query,[name, img, amount, num_in_stock, price, liqueurs_catagorie_id, id], (err, result) => {
+  connection.query(query,[name, img, amount, num_in_stock, price, catagorie_id, id], (err, result) => {
     if(err){
       res.status(400).json('Error updating liqueur')
     }

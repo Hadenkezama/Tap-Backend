@@ -12,7 +12,7 @@ const getByName = (req, res) => {
 
 } 
 const getColour = (req, res) => {
-  connection.query(`select * from wines T, wine_colour S where T.wine_colour_id = S.wine_colour_id and S.catagorie = '${req.params.wine_colour}'`, (err, result) => {
+  connection.query(`select * from wines T, wine_colour S where T.wine_colour = S.catagorie_id and S.catagorie = '${req.params.wine_colour}'`, (err, result) => {
   if(err){
     res.status(400).json('Error returning all wines of that catagorie')
   }
@@ -23,7 +23,7 @@ const getColour = (req, res) => {
 }
 
 const getRegion = (req, res) => {
-  connection.query(`select * from wines T, wine_region S where T.wine_region_id = S.wine_region_id and S.catagorie = '${req.params.wine_region}'`, (err, result) => {
+  connection.query(`select * from wines T, wine_region S where T.wine_region = S.catagorie_id and S.catagorie = '${req.params.wine_region}'`, (err, result) => {
   if(err){
     res.status(400).json('Error returning all wines of that catagorie')
   }
@@ -34,7 +34,7 @@ const getRegion = (req, res) => {
 }
 
 const getColourandRegion = (req, res) => {
-  connection.query(`select * from wines T, wine_region S, wine_colour V where T.wine_region_id = S.wine_region_id and T.wine_colour_id = V.wine_colour_id and S.catagorie = '${req.params.wine_region}' and V.catagorie = '${req.params.wine_colour}'`, (err, result) => {
+  connection.query(`select * from wines T, wine_region S, wine_colour V where T.wine_region = S.catagorie_id and T.wine_colour = V.catagorie_id and S.catagorie = '${req.params.wine_region}' and V.catagorie = '${req.params.wine_colour}'`, (err, result) => {
   if(err){
     res.status(400).json('Error returning all wines of that catagorie')
   }
@@ -79,7 +79,7 @@ const getOne = (req, res) => {
 }
 
 const createOne = (req, res) => {
-  let { name, img, amount, num_in_stock, price, wine_region_id, wine_colour_id } = req.body
+  let { name, img, amount, num_in_stock, price, wine_region, wine_colour } = req.body
 
   if(!name){
     return res.status(400).json('Wine name cannnot be left blank')
@@ -94,7 +94,7 @@ const createOne = (req, res) => {
   if(!price){
     return res.status(400).json('The price can not be left empty')
   }
-  if(!wine_colour_id){
+  if(!wine_colour){
     return res.status(400).json('The wine colour can not be left blank')
   }
 
@@ -104,8 +104,8 @@ const createOne = (req, res) => {
     amount: amount,
     num_in_stock: num_in_stock,
     price: price,
-    wine_region_id: wine_region_id,
-    wine_colour_id: wine_colour_id,
+    wine_region: wine_region,
+    wine_colour: wine_colour,
   }
 
   connection.query('insert into wines set ?', data, (err, result) => {
@@ -123,7 +123,7 @@ const createOne = (req, res) => {
 }
 
 const updateOne = (req, res) => {
-  let { name, img, amount, num_in_stock, price, wine_region_id, wine_colour_id } = req.body
+  let { name, img, amount, num_in_stock, price, wine_region, wine_colour } = req.body
   id = req.params.id
 
   if(!name){
@@ -139,19 +139,19 @@ const updateOne = (req, res) => {
   if(!price){
     return res.status(400).json('The price can not be left empty')
   }
-  if(!wine_colour_id){
+  if(!wine_colour){
     return res.status(400).json('The wine colour catagorie can not be left blank')
   }
-  if(isNaN( price, amount, num_in_stock, wine_colour_id )){
+  if(isNaN( price, amount, num_in_stock, wine_colour )){
     return res.status(400).json('A non number character was entered where number was supposed to be')
   }
 
 
   
 
-  const query = 'UPDATE wines SET name = ?, img = ?, amount = ?, num_in_stock = ?, price = ?, wine_region_id = ?, wine_colour_id = ? WHERE id = ?'
+  const query = 'UPDATE wines SET name = ?, img = ?, amount = ?, num_in_stock = ?, price = ?, wine_region = ?, wine_colour = ? WHERE id = ?'
 
-  connection.query(query,[name, img, amount, num_in_stock, price, wine_region_id, wine_colour_id, id], (err, result) => {
+  connection.query(query,[name, img, amount, num_in_stock, price, wine_region, wine_colour, id], (err, result) => {
     if(err){
       res.status(400).json('Error updating wine')
     }
